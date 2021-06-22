@@ -1,24 +1,33 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from .models import Product
+from .forms import ProductAddForm
+from django.http import HttpResponseRedirect
 
 # Create your views here.
-class ProductAdd(TemplateView):
-    template_name = "productadd.html"
+def ProductAdd(request):
+    if request.session.has_key("user"):
+        if request.method == "POST":
+            productaddform = ProductAddForm(request.POST)
+            if productaddform.is_valid():
 
-    def post(self, request):
-        product = Product()
-        product.name = request.POST.get("name")
-        product.quantity = request.POST.get("quantity")
-        product.stock = request.POST.get("stock")
-        product.price = request.POST.get("price")
-        product.image = request.POST.get("image")
-        product.save()
+                productadd = productaddform.save(commit=False)
+                productadd.save()
+                """
+                fname = productaddform.cleaned_data["name"]
+                fquantity = productaddform.cleaned_data["quantity"]
+                fstock = productaddform.cleaned_data["stock"]
+                fprice = productaddform.cleaned_data["price"]
+                """
 
-        return render(
-            request,
-            "productadd.html",
-        )
+            else:
+                print("invalid form")
+        else:
+            productaddform = ProductAddForm()
+    else:
+        return HttpResponseRedirect("../../login/")
+
+    return render(request, "productadd.html", {"form": productaddform})
 
 
 class ProductView(TemplateView):

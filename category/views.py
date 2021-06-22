@@ -1,21 +1,32 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from .models import Category
+from .forms import CategoryAddForm
+from django.http import HttpResponseRedirect
 
 # Create your views here.
-class CategoryAdd(TemplateView):
-    template_name = "categoryadd.html"
+def CategoryAdd(request):
+    if request.session.has_key("user"):
+        if request.method == "POST":
+            categoryaddform = CategoryAddForm(request.POST)
 
-    def post(self, request):
-        category = Category()
-        category.name = request.POST.get("name")
-        category.vendor = request.POST.get("vendor")
-        category.save()
+            if categoryaddform.is_valid():
 
-        return render(
-            request,
-            "categoryadd.html",
-        )
+                categoryadd = categoryaddform.save(commit=False)
+                categoryadd.save()
+
+                """
+                fcategory = categoryaddform.cleaned_data["name"]
+                fvendor = categoryaddform.cleaned_data["vendor"]
+                """
+            else:
+                print("invalid form")
+        else:
+            categoryaddform = CategoryAddForm()
+    else:
+        return HttpResponseRedirect("../../login/")
+
+    return render(request, "categoryadd.html", {"form": categoryaddform})
 
 
 class CategoryView(TemplateView):

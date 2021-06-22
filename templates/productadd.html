@@ -25,7 +25,7 @@
               </div>
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'login:logout' %}">Logout</a></li>
                   <li class="breadcrumb-item active">General Form</li>
                 </ol>
               </div>
@@ -50,62 +50,20 @@
                   {% csrf_token %}
                     <div class="card-body">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Product Name</label>
-                        <input
-                          type="name"
-                          class="form-control"
-                          name="name"
-                          id="exampleInputEmail1"
-                          placeholder="Product name"
-                        />
+                        {{form.name.label_tag}}
+                        {{form.name}}
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Product Quantity</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="quantity"
-                          id="exampleInputEmail1"
-                          placeholder="Product quantity"
-                        />
+                        {{form.quantity.label_tag}}
+                        {{form.quantity}}
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Stock</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="stock"
-                          id="exampleInputEmail1"
-                          placeholder="Stock"
-                        />
+                        {{form.stock.label_tag}}
+                        {{form.stock}}
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword1">Price</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="price"
-                          id="exampleInputPassword1"
-                          placeholder="Password"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputFile">Image</label>
-                        <div class="input-group">
-                          <div class="custom-file">
-                            <input
-                              type="file"
-                              class="custom-file-input"
-                              name="image"
-                              id="exampleInputFile"
-                            />
-                            <label
-                              class="custom-file-label"
-                              for="exampleInputFile"
-                              >Choose file</label
-                            >
-                          </div>
-                        </div>
+                        {{form.price.label_tag}}
+                        {{form.price}}
                       </div>
                     </div>
                     <!-- /.card-body -->

@@ -4,6 +4,6 @@ from . import views
 
 app_name = "category"
 urlpatterns = [
-    path("categoryadd/", views.CategoryAdd.as_view(), name="categoryadd"),
+    path("categoryadd/", views.CategoryAdd, name="categoryadd"),
     path("categoryread/", views.CategoryView.as_view(), name="categoryread"),
 ]
