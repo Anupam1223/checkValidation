@@ -13,7 +13,6 @@ def loginUser(request):
         if loginForm.is_valid():
 
             fname = loginForm.cleaned_data["email"]
-            fpass = loginForm.cleaned_data["password"]
             fremember = loginForm.cleaned_data["rememberMe"]
             print(fremember)
             user = User.objects.get(email=fname)
@@ -28,7 +27,6 @@ def loginUser(request):
             if fremember == "True":
                 print("entered cookie")
                 response.set_cookie("cookieusername", fname)
-                response.set_cookie("cookiepassword", fpass)
             else:
                 print("cookie not set")
 
@@ -38,10 +36,7 @@ def loginUser(request):
             print("invalid form")
     else:
         if request.COOKIES.get("cookieusername"):
-            if request.COOKIES.get("cookiepassword"):
-                return HttpResponseRedirect("../user/")
-            else:
-                print("password cookie not set")
+            return HttpResponseRedirect("../user/")
         else:
             print("username cookie not set")
 
@@ -55,5 +50,7 @@ def ForgotPass(request):
 
 
 def user_logout(request):
+    response = HttpResponseRedirect("../")
+    response.delete_cookie("cookieusername")
     logout(request)
-    return HttpResponseRedirect("../")
+    return response

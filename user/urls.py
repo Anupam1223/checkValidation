@@ -6,4 +6,5 @@ app_name = "user"
 urlpatterns = [
     path("", views.UserAdd, name="useradd"),
     path("userread/", views.UserView.as_view(), name="userread"),
+    path("changePass/", views.ChangePass, name="changepass"),
 ]
