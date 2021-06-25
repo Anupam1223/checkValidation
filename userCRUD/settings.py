@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     "product",
     "category",
     "login",
+    "crispy_forms",
 ]
+
+CRISPY_TEMPLATE_PACK = "uni_form"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -133,3 +136,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "/media/"
+
+# email configuration
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "anupam.siwakoti@gmail.com"
+EMAIL_HOST_PASSWORD = "10189@_utd"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "Anupam Siwakoti Team <noreply@codingwithmitch.com>"

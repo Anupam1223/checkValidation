@@ -11,8 +11,7 @@
     />
     <link rel="stylesheet" href="{% static 'dist/css/form.css' %}" />
 
-    <title>User Login</title>
-
+    <title>forgot password</title>
     <style>
       .form-control {
         text-align: center;
@@ -24,7 +23,6 @@
         color: red;
         font-weight: bold;
       }
-
       .inputWithIcon.inputIconBg .bg {
         padding: 9.5px 4px;
       }
@@ -32,11 +30,11 @@
   </head>
 
   <body>
-    <form action="{% url 'login:login' %}" method="POST" novalidate>
+    <form action="{% url 'login:fortgotpass' %}" method="POST" novalidate>
       {% csrf_token %}
 
       <div class="form-control">
-        <h2 class="border-bottom text-center">Sign-In</h2>
+        <h2 class="border-bottom text-center">Re-set Password</h2>
         <br />
 
         <div class="list">
@@ -48,32 +46,12 @@
           </ul>
           {% endif %}
         </div>
-
         <div class="pt-2">
           <div class="inputWithIcon inputIconBg">
             {{form.email}}
             <i class="fa fa-envelope fa-lg fa-fw bg"></i>
           </div>
-          <div class="inputWithIcon inputIconBg">
-            {{form.password}}
-            <i class="fas fa-key fa-lg fa-fw bg"></i>
-            <span class="eye">
-              <i class="fas fa-eye togglePassword"></i>
-            </span>
-          </div>
-          {{form.rememberMe}}
-          <label for="rememberMe"> Remember Me</label>
-          <input class="btn" name="submit" type="submit" value="Continue" />
-
-          <div class="text-center">
-            <p>
-              <small
-                ><a href="{% url 'login:fortgotpass' %}"
-                  >Forgot your password?</a
-                ></small
-              >
-            </p>
-          </div>
+          <input class="btn" name="submit" type="submit" value="send email" />
         </div>
       </div>
     </form>

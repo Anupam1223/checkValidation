@@ -1,15 +1,24 @@
 from django import forms
-from django.forms import fields
-from .models import User
+from django.contrib.auth.models import User
 
 
 class UserAddForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["name", "address", "email", "password"]
+        fields = [
+            "username",
+            "password",
+            "email",
+            "first_name",
+            "last_name",
+            "is_active",
+            "is_staff",
+            "is_superuser",
+        ]
         error_messages = {
-            "name": {"required": "please enter name"},
-            "address": {"required": "please enter address"},
+            "username": {"required": "please enter username"},
+            "first_name": {"required": "please enter first name"},
+            "last_name": {"required": "please enter last name"},
             "email": {"required": "please enter email"},
             "password": {"required": "please enter password"},
         }
@@ -17,25 +26,31 @@ class UserAddForm(forms.ModelForm):
             "password": forms.PasswordInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Enter Password",
+                    "placeholder": "enter Password",
                 }
             ),
-            "name": forms.TextInput(
+            "username": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Enter Name",
+                    "placeholder": "enter Name",
                 }
             ),
-            "address": forms.TextInput(
+            "first_name": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Enter address",
+                    "placeholder": "enter firstname",
                 }
             ),
             "email": forms.EmailInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Enter email",
+                    "placeholder": "enter email",
+                }
+            ),
+            "last_name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "enter lastname",
                 }
             ),
         }
@@ -85,11 +100,3 @@ class UserAddForm(forms.ModelForm):
         )
     )
     """
-
-    def clean_name(self):
-        valname = self.cleaned_data["name"]
-        if len(valname) < 4:
-            raise forms.ValidationError(
-                ("your name shouln't be less than 5"), code="invalid"
-            )
-        return valname
