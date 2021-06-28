@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import CustomUser
+from django.contrib.auth.models import AbstractUser
 
 
 class UserAddForm(forms.ModelForm):
@@ -100,3 +102,15 @@ class UserAddForm(forms.ModelForm):
         )
     )
     """
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        valEmail = self.cleaned_data.get("email")
+
+        verifyUser = User.objects.filter(email=valEmail).first()
+
+        if not valEmail:
+            return 0
+        if verifyUser:
+            raise forms.ValidationError("Email already exists!!!")

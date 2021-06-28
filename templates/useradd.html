@@ -16,6 +16,12 @@
         color: red;
         font-weight: bold;
       }
+      .errorlist {
+        margin-top: 10px;
+        text-align: center;
+        padding: 0px;
+        margin-bottom: 0px;
+    }
     </style>
   </head>
   {% endblock csspart %}
@@ -102,7 +108,7 @@
                   {% csrf_token %}
                       <div class="list">
                         {% if form.errors %}
-                        <ul>
+                        <ul class="errorlist">
                           {% for key,value in form.errors.items %}
                           <li class="list-errors">{{ value|escape }}</li>
                           {% endfor %}
