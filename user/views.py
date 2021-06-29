@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
-from django.contrib.auth.models import User
+from .models import User
 from .forms import UserAddForm
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
@@ -18,16 +18,6 @@ def UserAdd(request):
                 password = useraddform.cleaned_data["password"]
                 useradded.set_password(useradded.password)
                 useradded.save()
-                """
-                fname = useraddform.cleaned_data["name"]
-                faddress = useraddform.cleaned_data["address"]
-                femail = useraddform.cleaned_data["email"]
-                fpassword = useraddform.cleaned_data["password"]
-                useradd = User(
-                    name=fname, address=faddress, email=femail, password=fpassword
-                )
-                useradd.save()
-                """
             else:
                 print("invalid form")
         else:

@@ -1,24 +1,21 @@
 from django import forms
-from django.contrib.auth.models import User
-from .models import CustomUser
-from django.contrib.auth.models import AbstractUser
+from .models import User
 
 
 class UserAddForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
-            "username",
-            "password",
+            "address",
             "email",
             "first_name",
             "last_name",
             "is_active",
-            "is_staff",
-            "is_superuser",
+            "staff",
+            "admin",
+            "password",
         ]
         error_messages = {
-            "username": {"required": "please enter username"},
             "first_name": {"required": "please enter first name"},
             "last_name": {"required": "please enter last name"},
             "email": {"required": "please enter email"},
@@ -31,7 +28,7 @@ class UserAddForm(forms.ModelForm):
                     "placeholder": "enter Password",
                 }
             ),
-            "username": forms.TextInput(
+            "address": forms.TextInput(
                 attrs={
                     "class": "form-control",
                     "placeholder": "enter Name",
@@ -40,7 +37,7 @@ class UserAddForm(forms.ModelForm):
             "first_name": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "enter firstname",
+                    "placeholder": "firstname",
                 }
             ),
             "email": forms.EmailInput(
