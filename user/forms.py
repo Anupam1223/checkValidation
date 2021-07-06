@@ -24,14 +24,14 @@ class UserAddForm(forms.ModelForm):
         widgets = {
             "password": forms.PasswordInput(
                 attrs={
-                    "class": "form-control",
-                    "placeholder": "enter Password",
+                    "class": "form-control password",
+                    "placeholder": "password",
                 }
             ),
             "address": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "enter Name",
+                    "placeholder": "address",
                 }
             ),
             "first_name": forms.TextInput(
@@ -43,71 +43,107 @@ class UserAddForm(forms.ModelForm):
             "email": forms.EmailInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "enter email",
+                    "placeholder": "email",
                 }
             ),
             "last_name": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "enter lastname",
+                    "placeholder": "lastname",
                 }
             ),
         }
 
-    """
-    name = forms.CharField(
-        error_messages={"required": "please enter name"},
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Enter Name",
-            }
-        ),
-    )
-    address = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Enter Address",
-            }
-        )
-    )
-    email = forms.EmailField(
-        widget=forms.EmailInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Enter Email",
-            }
-        )
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Enter Password",
-            }
-        )
-    )
+    def clean(self):
+        cleaned_data = super().clean()
 
-    image = forms.FileField(
-        widget=forms.FileInput(
-            attrs={
-                "class": "custom-file-input",
+        first_name = self.cleaned_data.get("first_name", None)
+        if not first_name:
+            raise forms.ValidationError("please provide firstname", code="invalid")
 
-                "placeholder": "Enter Name",
-            }
-        )
-    )
-    """
+        last_name = self.cleaned_data.get("last_name", None)
+        if not last_name:
+            raise forms.ValidationError("please provide lastname", code="invalid")
+
+        email = self.cleaned_data.get("email", None)
+        if not email:
+            raise forms.ValidationError("please provide email", code="invalid")
+
+        # check whether mail already exists or not
+        verifyUser = User.objects.filter(email=email).first()
+        if verifyUser:
+            raise forms.ValidationError("Email already exists!!!", code="invalid")
+
+        address = self.cleaned_data.get("address", None)
+        if not address:
+            raise forms.ValidationError("please provide address", code="invalid")
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "address",
+            "email",
+            "first_name",
+            "last_name",
+            "is_active",
+            "staff",
+            "admin",
+        ]
+        error_messages = {
+            "address": {"required": "please enter your address"},
+            "first_name": {"required": "please enter first name"},
+            "last_name": {"required": "please enter last name"},
+            "email": {"required": "please enter email"},
+        }
+        widgets = {
+            "address": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "address",
+                }
+            ),
+            "first_name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "firstname",
+                }
+            ),
+            "email": forms.EmailInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "email",
+                }
+            ),
+            "last_name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "lastname",
+                }
+            ),
+        }
 
     def clean(self):
         cleaned_data = super().clean()
 
-        valEmail = self.cleaned_data.get("email")
+        first_name = self.cleaned_data.get("first_name", None)
+        last_name = self.cleaned_data.get("last_name", None)
+        email = self.cleaned_data.get("email", None)
+        address = self.cleaned_data.get("address", None)
 
-        verifyUser = User.objects.filter(email=valEmail).first()
+        if not first_name:
+            print("please provide firstname")
+            raise forms.ValidationError("please provide firstname", code="invalid")
 
-        if not valEmail:
-            return 0
-        if verifyUser:
-            raise forms.ValidationError("Email already exists!!!")
+        if not last_name:
+            print("please provide lastname")
+            raise forms.ValidationError("please provide lastname", code="invalid")
+
+        if not email:
+            print("please provide email")
+            raise forms.ValidationError("please provide email", code="invalid")
+
+        if not address:
+            print("please provide address")
+            raise forms.ValidationError("please provide address", code="invalid")

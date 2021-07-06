@@ -51,7 +51,13 @@
             {{form.email}}
             <i class="fa fa-envelope fa-lg fa-fw bg"></i>
           </div>
-          <input class="btn" name="submit" type="submit" value="send email" />
+          <input class="btn" name="submit" type="submit" value="send email" />          <div class="text-center">
+            <p>
+              <small
+                ><a href="{% url 'login:login' %}"
+                  >Login</a
+                ></small
+              >
         </div>
       </div>
     </form>

@@ -1,10 +1,18 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from .models import User
-from .forms import UserAddForm
+from .forms import UserAddForm, UserUpdateForm
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+from .tokens import account_activation_token
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
 
 # Create your views here.
 def UserAdd(request):
@@ -18,6 +26,8 @@ def UserAdd(request):
                 password = useraddform.cleaned_data["password"]
                 useradded.set_password(useradded.password)
                 useradded.save()
+                messages.success(request, "User added sucessfully")
+                return HttpResponseRedirect("/user/userread")
             else:
                 print("invalid form")
         else:
@@ -43,7 +53,6 @@ class UserView(TemplateView):
 
 # ChangePass view will take in the request body with old and new password
 def ChangePass(request):
-
     if request.method == "POST":
 
         fpassword = request.POST.get("oldPass")
@@ -76,17 +85,104 @@ def ChangePass(request):
         # password of extracted pasword
         userpass = verifyUser.password
 
+        print(userpass, fpassword)
+
         # checks whether the password given by user and actual password matches or not
-        if fpassword == userpass:
+        if check_password(fpassword, userpass):
             # checks whether the new password matches
             if password1 == password2:
+
+                password_to_save = make_password(password2)
                 # update the passowrd
-                User.objects.filter(id=userid).update(password=password2)
+                User.objects.filter(id=userid).update(password=password_to_save)
                 # if updated than message is shown in the dashboard
-                messages.success(request, "password updated in successfully")
+                messages.success(request, "password updated successfully")
                 # redirects to the dashboard
                 return HttpResponseRedirect("../")
             else:
-                raise ValidationError("re-entered pasword didnt matched ")
+                messages.error(request, "reenter password didnt matched")
+                return HttpResponseRedirect("../")
         else:
-            raise ValidationError("old password didnt matched")
+            messages.error(request, "old password didnt matched")
+            return HttpResponseRedirect("../")
+
+
+def UpdateUser(request, id):
+    if request.method == "POST":
+        data = User.objects.get(pk=id)
+        fm = UserUpdateForm(request.POST or None, instance=data)
+        if fm.is_valid():
+            fm.save()
+            messages.success(request, "user updated sucessfully")
+            return HttpResponseRedirect("/user/userread")
+        else:
+            print("invalid form")
+
+    data = User.objects.get(pk=id)
+    fm = UserUpdateForm(instance=data)
+
+    return render(request, "updateuser.html", {"form": fm})
+
+
+def DeleteUser(request, id):
+    if request.method == "POST":
+        data = User.objects.get(pk=id)
+        data.delete()
+        messages.success(request, "user deleted")
+        return HttpResponseRedirect("../../userread")
+
+    return HttpResponseRedirect("../")
+
+
+def UserRegister(request):
+
+    if request.method == "POST":
+        useraddform = UserAddForm(request.POST)
+
+        if useraddform.is_valid():
+
+            print("register validate")
+            useradded = useraddform.save(commit=False)
+            password = useraddform.cleaned_data["password"]
+            useradded.set_password(useradded.password)
+            useradded.save()
+
+            current_site = get_current_site(request)
+            mail_subject = "Activate your account."
+            message = render_to_string(
+                "acc_active_email.html",
+                {
+                    "user": useradded,
+                    "domain": current_site.domain,
+                    "uid": urlsafe_base64_encode(force_bytes(useradded.id)),
+                    "token": account_activation_token.make_token(useradded),
+                },
+            )
+            to_email = useraddform.cleaned_data.get("email")
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+
+            return HttpResponseRedirect("../")
+
+        else:
+            print("invalid form")
+    else:
+        useraddform = UserAddForm()
+
+    return render(request, "register.html", {"form": useraddform})
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return HttpResponse(
+            "Thank you for your email confirmation. Now you can login your account."
+        )
+    else:
+        return HttpResponse("Activation link is invalid!")

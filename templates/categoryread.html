@@ -44,6 +44,14 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                  {% for message in messages %}
+                  <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    {{ message }}
+                  </div>
+                  {% endfor %}
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
@@ -56,6 +64,14 @@
                     <tr>
                       <td>{{categories.name}}</td>
                       <td>{{categories.vendor}}</td>
+                      <td>
+                      <a class="btn btn-success" href="{% url 'category:updatecategory' categories.id %}"
+                        role="button">Edit</a>
+                      <form action="{% url 'category:deletecategory' categories.id %}" method="POST" class=d-inline>
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                      </form>
+                    </td>
                     </tr>
                   {% endfor %}
                   </tbody>

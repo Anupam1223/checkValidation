@@ -12,23 +12,6 @@
     <link rel="stylesheet" href="{% static 'dist/css/form.css' %}" />
 
     <title>User Login</title>
-
-    <style>
-      .form-control {
-        text-align: center;
-        margin-top: 200px;
-      }
-
-      .list li {
-        list-style: none;
-        color: red;
-        font-weight: bold;
-      }
-
-      .inputWithIcon.inputIconBg .bg {
-        padding: 9.5px 4px;
-      }
-    </style>
   </head>
 
   <body>
@@ -72,6 +55,7 @@
                   >Forgot your password?</a
                 ></small
               >
+              <small><a href="{% url 'user:register' %}">register</a></small>
             </p>
           </div>
         </div>

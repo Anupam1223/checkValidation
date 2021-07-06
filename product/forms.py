@@ -13,7 +13,7 @@ class ProductAddForm(forms.ModelForm):
             "price": {"required": "please enter price"},
         }
         widgets = {
-            "name": forms.PasswordInput(
+            "name": forms.TextInput(
                 attrs={
                     "class": "form-control",
                     "placeholder": "Enter product name",
@@ -38,42 +38,3 @@ class ProductAddForm(forms.ModelForm):
                 }
             ),
         }
-
-    """
-    name = forms.CharField(
-        error_messages={"required": "please enter name"},
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Enter product name",
-            }
-        ),
-    )
-    quantity = forms.IntegerField(
-        error_messages={"required": "please enter name"},
-        widget=forms.NumberInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "please enter total quantity",
-            }
-        ),
-    )
-    stock = forms.IntegerField(
-        error_messages={"required": "please enter total stock"},
-        widget=forms.NumberInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "please enter total stock",
-            }
-        ),
-    )
-    price = forms.IntegerField(
-        error_messages={"required": "please enter price of product"},
-        widget=forms.NumberInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Enter Name",
-            }
-        ),
-    )
-    """

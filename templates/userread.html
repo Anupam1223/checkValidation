@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+
   </head>
   {% endblock csspart %}
 
@@ -25,6 +26,7 @@
               <div class="col-sm-6">
                 <h1>General Form</h1>
               </div>
+              
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="{% url 'login:logout' %}">Logout</a></li>
@@ -44,6 +46,16 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+              
+              {% for message in messages %}
+              <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                {{ message }}
+              </div>
+              {% endfor %}
+
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
@@ -54,6 +66,7 @@
                     <th>Staff</th>
                     <th>Active</th>
                     <th>Superuser</th>
+                    <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -66,6 +79,14 @@
                       <td>{{users.staff}}</td>
                       <td>{{users.is_active}}</td>
                       <td>{{users.admin}}</td>
+                      <td>
+                        <a class="btn btn-success" href="{% url 'user:updateuser' users.id %}"
+                          role="button">Edit</a>
+                        <form action="{% url 'user:deleteuser' users.id %}" method="POST" class=d-inline>
+                          {% csrf_token %}
+                          <input type="submit" class="btn btn-danger" value="Delete">
+                        </form>
+                      </td>
                     </tr>
                   {% endfor %}
                   </tbody>

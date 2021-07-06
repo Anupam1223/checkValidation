@@ -3,8 +3,6 @@ from django.core.exceptions import ValidationError
 from user.models import User
 from django.contrib.auth.hashers import (
     check_password,
-    is_password_usable,
-    make_password,
 )
 
 # class for login form
@@ -22,9 +20,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         error_messages={"required": "please enter password"},
         widget=forms.PasswordInput(
-            attrs={
-                "placeholder": "Enter password",
-            }
+            attrs={"placeholder": "Enter password", "class": "password"}
         ),
     )
     rememberMe = forms.CharField(
@@ -39,17 +35,22 @@ class LoginForm(forms.Form):
         cleaned_data = super().clean()
 
         valEmail = self.cleaned_data.get("email")
-        valpassword = self.cleaned_data.get("password")
-
-        verifyUser = User.objects.filter(email=valEmail).first()
-
-        if not verifyUser:
-            raise ValidationError("user doesnt exist")
 
         if not valEmail:
             return 0
+
+        valpassword = self.cleaned_data.get("password")
+
         if not valpassword:
             return 0
+
+        verifyUser = User.objects.filter(email=valEmail).first()
+
+        if not verifyUser.is_active:
+            raise ValidationError("user is not active, check your mail")
+
+        if not verifyUser:
+            raise ValidationError("user doesnt exist")
 
         if not check_password(valpassword, verifyUser.password):
             raise ValidationError("username and  password didnt matched")
