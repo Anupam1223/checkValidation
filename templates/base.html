@@ -62,11 +62,13 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-          <!-- Sidebar user panel (optional) -->
+          <!-- Sidebar user panel (optional)  {%static 'dist/img/traveler1.jpg' %} -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+          
             <div class="image">
               <img
-                src="{%static 'dist/img/traveler1.jpg' %}"
+                src="{{ user.profile_pic.url }}"
                 class="img-circle elevation-2"
                 alt="User Image"
               />

@@ -78,12 +78,6 @@ class UserAddForm(forms.ModelForm):
         if not password:
             raise forms.ValidationError("please provide password", code="invalid")
 
-        picture = self.cleaned_data.get("profile_pic", None)
-        if not picture:
-            raise forms.ValidationError(
-                "please provide profile picture", code="invalid"
-            )
-
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:

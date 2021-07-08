@@ -12,7 +12,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
-from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 
@@ -24,12 +23,10 @@ def UserAdd(request):
                 data=(request.POST or None), files=(request.FILES or None)
             )
             if useraddform.is_valid():
-
                 useradded = useraddform.save(commit=False)
-
-                password = useraddform.cleaned_data["password"]
                 useradded.set_password(useradded.password)
                 useradded.save()
+
                 messages.success(request, "User added sucessfully")
                 return HttpResponseRedirect("/user/userread")
             else:
@@ -121,8 +118,6 @@ def UpdateUser(request, id):
             return HttpResponseRedirect("/user/userread")
         else:
             print("invalid form")
-            # messages.error(request, "user update failed")
-            # return HttpResponseRedirect("/user/userread")
 
     data = User.objects.get(pk=id)
     fm = UserUpdateForm(instance=data)
@@ -149,7 +144,6 @@ def UserRegister(request):
 
             print("register validate")
             useradded = useraddform.save(commit=False)
-            password = useraddform.cleaned_data["password"]
             useradded.set_password(useradded.password)
             useradded.save()
 
@@ -189,10 +183,6 @@ def activate(request, uidb64, token):
         user.save()
         messages.success(request, "Email verified")
         return redirect(reverse("login:login"))
-
-        # return HttpResponse(
-        # "Thank you for your email confirmation. Now you can login your account."
-    # )
     else:
         messages.error(request, "please provide valid email address")
         return redirect(reverse("login:login"))

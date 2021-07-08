@@ -14,6 +14,10 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from user.models import User as users
+from django.contrib.auth import (
+    authenticate,
+    login,
+)
 
 # Create your views here
 # ------------------ Views for logging in --------------------------
@@ -24,12 +28,16 @@ def loginUser(request):
         if loginForm.is_valid():
 
             fname = loginForm.cleaned_data["email"]
+            pw = loginForm.cleaned_data["password"]
             fremember = loginForm.cleaned_data["rememberMe"]
-            print(fremember)
-            user = users.objects.get(email=fname)
+
+            userss = users.objects.get(email=fname)
+
+            user = authenticate(username=fname, password=pw)
+            login(request, user)
 
             # session created
-            request.session["user"] = user.email
+            request.session["user"] = userss.email
 
             # return response
             messages.success(request, "User Logged in successfully")
