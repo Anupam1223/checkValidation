@@ -70,10 +70,7 @@ def ForgotPass(request):
             print("hiii i am associated_users", associated_users, fname)
 
             if associated_users.exists():
-                print("hiii i am inside associated user")
                 for user in associated_users:
-                    print("hiii i am inside for loop")
-
                     subject = "Password Reset Requested"
                     email_template_name = "resetPass/password_reset_email.txt"
                     print(email_template_name)

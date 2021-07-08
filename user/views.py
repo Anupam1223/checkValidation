@@ -13,12 +13,16 @@ from django.utils.encoding import force_bytes, force_text
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 
 # Create your views here.
 def UserAdd(request):
     if request.session.has_key("user"):
         if request.method == "POST":
-            useraddform = UserAddForm(request.POST)
+            useraddform = UserAddForm(
+                data=(request.POST or None), files=(request.FILES or None)
+            )
             if useraddform.is_valid():
 
                 useradded = useraddform.save(commit=False)
@@ -43,11 +47,11 @@ class UserView(TemplateView):
     # this view will render userread template
     template_name = "userread.html"
 
-    #
+    # when get request is requested by user than this method is runned
     def get(self, request):
-        #
+        # select all the data from user to render in userview
         user = User.objects.all()
-        #
+        # rendering the userview template to see them
         return render(request, self.template_name, {"user": user})
 
 
@@ -110,13 +114,15 @@ def ChangePass(request):
 def UpdateUser(request, id):
     if request.method == "POST":
         data = User.objects.get(pk=id)
-        fm = UserUpdateForm(request.POST or None, instance=data)
+        fm = UserUpdateForm(request.POST, instance=data)
         if fm.is_valid():
             fm.save()
             messages.success(request, "user updated sucessfully")
             return HttpResponseRedirect("/user/userread")
         else:
             print("invalid form")
+            # messages.error(request, "user update failed")
+            # return HttpResponseRedirect("/user/userread")
 
     data = User.objects.get(pk=id)
     fm = UserUpdateForm(instance=data)
@@ -161,8 +167,8 @@ def UserRegister(request):
             to_email = useraddform.cleaned_data.get("email")
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
-
-            return HttpResponseRedirect("../")
+            messages.success(request, "verification mail sent, please check mail")
+            return redirect(reverse("login:login"))
 
         else:
             print("invalid form")
@@ -181,8 +187,12 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse(
-            "Thank you for your email confirmation. Now you can login your account."
-        )
+        messages.success(request, "Email verified")
+        return redirect(reverse("login:login"))
+
+        # return HttpResponse(
+        # "Thank you for your email confirmation. Now you can login your account."
+    # )
     else:
-        return HttpResponse("Activation link is invalid!")
+        messages.error(request, "please provide valid email address")
+        return redirect(reverse("login:login"))

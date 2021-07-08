@@ -10,16 +10,17 @@ class UserAddForm(forms.ModelForm):
             "email",
             "first_name",
             "last_name",
+            "password",
+            "profile_pic",
             "is_active",
             "staff",
             "admin",
-            "password",
         ]
         error_messages = {
-            "first_name": {"required": "please enter first name"},
-            "last_name": {"required": "please enter last name"},
-            "email": {"required": "please enter email"},
-            "password": {"required": "please enter password"},
+            "first_name": {"required": ""},
+            "last_name": {"required": ""},
+            "email": {"required": ""},
+            "password": {"required": ""},
         }
         widgets = {
             "password": forms.PasswordInput(
@@ -57,6 +58,10 @@ class UserAddForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
+        address = self.cleaned_data.get("address", None)
+        if not address:
+            raise forms.ValidationError("please provide address", code="invalid")
+
         first_name = self.cleaned_data.get("first_name", None)
         if not first_name:
             raise forms.ValidationError("please provide firstname", code="invalid")
@@ -69,14 +74,15 @@ class UserAddForm(forms.ModelForm):
         if not email:
             raise forms.ValidationError("please provide email", code="invalid")
 
-        # check whether mail already exists or not
-        verifyUser = User.objects.filter(email=email).first()
-        if verifyUser:
-            raise forms.ValidationError("Email already exists!!!", code="invalid")
+        password = self.cleaned_data.get("password", None)
+        if not password:
+            raise forms.ValidationError("please provide password", code="invalid")
 
-        address = self.cleaned_data.get("address", None)
-        if not address:
-            raise forms.ValidationError("please provide address", code="invalid")
+        picture = self.cleaned_data.get("profile_pic", None)
+        if not picture:
+            raise forms.ValidationError(
+                "please provide profile picture", code="invalid"
+            )
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -92,10 +98,10 @@ class UserUpdateForm(forms.ModelForm):
             "admin",
         ]
         error_messages = {
-            "address": {"required": "please enter your address"},
-            "first_name": {"required": "please enter first name"},
-            "last_name": {"required": "please enter last name"},
-            "email": {"required": "please enter email"},
+            "address": {"required": ""},
+            "first_name": {"required": ""},
+            "last_name": {"required": ""},
+            "email": {"required": ""},
         }
         widgets = {
             "address": forms.TextInput(
@@ -128,22 +134,21 @@ class UserUpdateForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         first_name = self.cleaned_data.get("first_name", None)
-        last_name = self.cleaned_data.get("last_name", None)
-        email = self.cleaned_data.get("email", None)
-        address = self.cleaned_data.get("address", None)
-
         if not first_name:
             print("please provide firstname")
             raise forms.ValidationError("please provide firstname", code="invalid")
 
+        last_name = self.cleaned_data.get("last_name", None)
         if not last_name:
             print("please provide lastname")
             raise forms.ValidationError("please provide lastname", code="invalid")
 
+        email = self.cleaned_data.get("email", None)
         if not email:
             print("please provide email")
             raise forms.ValidationError("please provide email", code="invalid")
 
+        address = self.cleaned_data.get("address", None)
         if not address:
             print("please provide address")
             raise forms.ValidationError("please provide address", code="invalid")

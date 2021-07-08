@@ -9,7 +9,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{%static 'dist/css/adminlte.min.css' %}" />
 
-        <style>
+    <style>
 
       .list li {
         list-style: none;
@@ -103,7 +103,7 @@
                   </div>
                   <!-- /.card-header -->
                   <!-- form start -->
-                  <form method="POST" action="{% url 'user:useradd' %}" novalidate>
+                  <form action="{% url 'user:useradd' %}" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
                       <div class="list">
                         {% if form.errors %}
@@ -114,55 +114,14 @@
                         </ul>
                         {% endif %}
                       </div>
-                    <div class="card-body">
-                      <div class="form-group">
-                        {{form.address.label_tag}}
-                        {{form.address}}
-                      </div>
-                      <div class="form-group">
-                        {{form.first_name.label_tag}}
-                        {{form.first_name}}
-                      </div>
-                      <div class="form-group">
-                        {{form.last_name.label_tag}}
-                        {{form.last_name}}
-                      </div>
-                      <div class="form-group">
-                        {{form.email.label_tag}}
-                        {{form.email}}
-                      </div>
-                      <div class="form-group">
-                        {{form.password.label_tag}}
-                        {{form.password}}
-                      </div>
-                      <div class="form-group">
-                        {{form.is_active.label_tag}}
-                        {{form.is_active}}
-                      </div>
-                      <div class="form-group">
-                        {{form.staff.label_tag}}
-                        {{form.staff}}
-                      </div>
-                      <div class="form-group">
-                        {{form.admin.label_tag}}
-                        {{form.admin}}
-                      </div>
-                      <!--
-                      <div class="form-group">
-                        {{form.password.label_tag}}
-                        <div class="input-group">
-                          <div class="custom-file">
-                        
-                        {{form.image}}
-                            <label
-                              class="custom-file-label"
-                              for="exampleInputFile"
-                              >Choose file</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                      -->
+                                  <div class="card-body">
+                                    {%for formfield in form%}
+                                        <div class="form-group">
+                                            {{formfield.label_tag}}
+                                            {{ formfield}}
+                                        </div>
+                                    {% endfor%}
+                                </div>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">

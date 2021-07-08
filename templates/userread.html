@@ -11,6 +11,14 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
 
+    <style>
+    .alert-error {
+      color: #fff;
+      background-color: rgb(223, 199, 212);
+      border-color: rgb(223, 199, 212);
+    }
+    </style>
+
   </head>
   {% endblock csspart %}
 
@@ -63,6 +71,7 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
+                    <th>Profile Picture</th>
                     <th>Staff</th>
                     <th>Active</th>
                     <th>Superuser</th>
@@ -76,6 +85,7 @@
                       <td>{{users.first_name}}</td>
                       <td>{{users.last_name}}</td>
                       <td>{{users.email}}</td>
+                      <td>{{users.profile_pic}}</td>
                       <td>{{users.staff}}</td>
                       <td>{{users.is_active}}</td>
                       <td>{{users.admin}}</td>

@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import (
 class LoginForm(forms.Form):
 
     email = forms.EmailField(
-        error_messages={"required": "please enter Email"},
+        error_messages={"required": ""},
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Enter Email",
@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
     )
 
     password = forms.CharField(
-        error_messages={"required": "please enter password"},
+        error_messages={"required": ""},
         widget=forms.PasswordInput(
             attrs={"placeholder": "Enter password", "class": "password"}
         ),
@@ -37,20 +37,20 @@ class LoginForm(forms.Form):
         valEmail = self.cleaned_data.get("email")
 
         if not valEmail:
-            return 0
+            raise ValidationError("please enter Email")
 
         valpassword = self.cleaned_data.get("password")
 
         if not valpassword:
-            return 0
+            raise ValidationError("please enter password")
 
         verifyUser = User.objects.filter(email=valEmail).first()
 
+        if not verifyUser:
+            raise ValidationError("user doesn't exists")
+
         if not verifyUser.is_active:
             raise ValidationError("user is not active, check your mail")
-
-        if not verifyUser:
-            raise ValidationError("user doesnt exist")
 
         if not check_password(valpassword, verifyUser.password):
             raise ValidationError("username and  password didnt matched")

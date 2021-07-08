@@ -1,18 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
-"""
-# Create your models here.
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=10)
-    email = models.CharField(max_length=30)
-    password = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-"""
-
 
 class UserManager(BaseUserManager):
     def create_user(
@@ -69,6 +57,7 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)  # a admin user; non super-user
     admin = models.BooleanField(default=False)  # a superuser
     last_login = models.DateTimeField(blank=True, null=True, verbose_name="last login")
+    profile_pic = models.ImageField(blank=True, null=True, upload_to="images/")
 
     USERNAME_FIELD = "email"
 

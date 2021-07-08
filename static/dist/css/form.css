@@ -23,6 +23,29 @@ body {
   font-weight: bold;
 }
 
+.alert-error {
+  color: #fff;
+  background-color: rgb(223, 199, 212);
+  border-color: rgb(223, 199, 212);
+}
+
+.alert-success {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #23923d;
+}
+
+.alert-dismissible {
+  padding-right: 4rem;
+}
+
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
 .text-center a {
   text-decoration: none;
 }
@@ -122,6 +145,7 @@ a:hover {
 .text-center {
   text-align: center;
 }
+
 /* Utilities Ends*/
 
 /* Responsive */
