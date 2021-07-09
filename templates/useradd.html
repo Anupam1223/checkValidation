@@ -38,41 +38,9 @@
               <div class="col-sm-6">
                 <h1>General Form</h1>
               </div>
-              <div id="myModal" class="modal fade" role="dialog">
-                      <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-                          <div class="modal-body">
-                                  <div class="tab-pane changePasswordForm" id="">
-                                    <h6>Change Password</h6>
-                                    <form action="{% url 'user:changepass' %}" method="POST">
-                                        {% csrf_token %}
-                                        <input class="form-control form-control-sm mb-2 oldpass" name="oldPass" type="password"
-                                            placeholder="Old Password" reqiured>
-                                        <input class="form-control form-control-sm mb-2 newPass1" name="newPass1" type="password"
-                                            placeholder="New Password" reqiured>
-                                        <input class="form-control form-control-sm mb-2 newPass2" name="newPass2" type="password"
-                                            placeholder="Re-enter New Password" reqiured>
-                                        <input type="submit" name ="changePassword" class="btn btn-primary btn-sm" value="Change Password">
-
-                                    </form>
-                                </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-
-                      </div>
-              </div>
-
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item" data-toggle="modal" data-target="#myModal"  ><a href="#">Change Password</a></li>
-                  <li class="breadcrumb-item"><a href="{% url 'login:logout' %}">Logout</a></li>
+                <!-- <li class="breadcrumb-item" data-toggle="modal" data-target="#myModal"  ><a href="#">Change Password</a></li> -->  
                   <li class="breadcrumb-item active">General Form</li>
                 </ol>
               </div>
@@ -115,7 +83,7 @@
                         {% endif %}
                       </div>
                                   <div class="card-body">
-                                    {%for formfield in form%}
+                                    {%for formfield in form %}
                                         <div class="form-group">
                                             {{formfield.label_tag}}
                                             {{ formfield}}

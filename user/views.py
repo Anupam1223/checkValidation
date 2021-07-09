@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from .models import User
-from .forms import UserAddForm, UserUpdateForm
+from .forms import UserAddForm, UserUpdateForm, UserProfileForm
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.contrib import messages
@@ -49,7 +49,7 @@ class UserView(TemplateView):
         # select all the data from user to render in userview
         user = User.objects.all()
         # rendering the userview template to see them
-        return render(request, self.template_name, {"user": user})
+        return render(request, self.template_name, {"users": user})
 
 
 # ChangePass view will take in the request body with old and new password
@@ -98,8 +98,8 @@ def ChangePass(request):
                 User.objects.filter(id=userid).update(password=password_to_save)
                 # if updated than message is shown in the dashboard
                 messages.success(request, "password updated successfully")
-                # redirects to the dashboard
-                return HttpResponseRedirect("../")
+                return HttpResponseRedirect("/login/")
+
             else:
                 messages.error(request, "reenter password didnt matched")
                 return HttpResponseRedirect("../")
@@ -186,3 +186,20 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, "please provide valid email address")
         return redirect(reverse("login:login"))
+
+
+def Profile(request, id):
+    if request.method == "POST":
+        datas = User.objects.get(pk=id)
+        fm = UserProfileForm(
+            data=(request.POST or None), files=(request.FILES or None), instance=datas
+        )
+        if fm.is_valid():
+            fm.save()
+        else:
+            print("invalid form")
+
+    datas = User.objects.get(pk=id)
+    fm = UserProfileForm(instance=datas)
+
+    return render(request, "profile.html", {"form": fm})

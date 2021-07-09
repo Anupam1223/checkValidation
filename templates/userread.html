@@ -37,7 +37,6 @@
               
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="{% url 'login:logout' %}">Logout</a></li>
                   <li class="breadcrumb-item active">General Form</li>
                 </ol>
               </div>
@@ -79,20 +78,20 @@
                   </tr>
                   </thead>
                   <tbody>
-                  {% for users in user %}
+                  {% for user in users %}
                     <tr>
-                      <td>{{users.address}}</td>
-                      <td>{{users.first_name}}</td>
-                      <td>{{users.last_name}}</td>
-                      <td>{{users.email}}</td>
-                      <td>{{users.profile_pic}}</td>
-                      <td>{{users.staff}}</td>
-                      <td>{{users.is_active}}</td>
-                      <td>{{users.admin}}</td>
+                      <td>{{user.address}}</td>
+                      <td>{{user.first_name}}</td>
+                      <td>{{user.last_name}}</td>
+                      <td>{{user.email}}</td>
+                      <td>{{user.profile_pic}}</td>
+                      <td>{{user.staff}}</td>
+                      <td>{{user.is_active}}</td>
+                      <td>{{user.admin}}</td>
                       <td>
-                        <a class="btn btn-success" href="{% url 'user:updateuser' users.id %}"
+                        <a class="btn btn-success" href="{% url 'user:updateuser' user.id %}"
                           role="button">Edit</a>
-                        <form action="{% url 'user:deleteuser' users.id %}" method="POST" class=d-inline>
+                        <form action="{% url 'user:deleteuser' user.id %}" method="POST" class=d-inline>
                           {% csrf_token %}
                           <input type="submit" class="btn btn-danger" value="Delete">
                         </form>

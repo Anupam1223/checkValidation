@@ -16,4 +16,5 @@ urlpatterns = [
     path("deleteuser/<int:id>/", views.DeleteUser, name="deleteuser"),
     path("register/", views.UserRegister, name="register"),
     path("activate/<uidb64>/<token>/", views.activate, name="activate"),
+    path("profile/<int:id>/", views.Profile, name="profile"),
 ]
