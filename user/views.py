@@ -18,25 +18,36 @@ from django.urls import reverse
 # Create your views here.
 def UserAdd(request):
     if request.session.has_key("user"):
-        if request.method == "POST":
-            useraddform = UserAddForm(
-                data=(request.POST or None), files=(request.FILES or None)
-            )
-            if useraddform.is_valid():
-                useradded = useraddform.save(commit=False)
-                useradded.set_password(useradded.password)
-                useradded.save()
 
-                messages.success(request, "User added sucessfully")
-                return HttpResponseRedirect("/user/userread")
+        # extract session value to extract the user password from database
+        semail = request.session["user"]
+
+        # extract the user with matching email taken from session
+        verifyUser = User.objects.filter(email=semail).first()
+        if verifyUser.admin:
+
+            if request.method == "POST":
+                useraddform = UserAddForm(
+                    data=(request.POST or None), files=(request.FILES or None)
+                )
+
+                if useraddform.is_valid():
+                    useradded = useraddform.save(commit=False)
+                    useradded.set_password(useradded.password)
+                    useradded.save()
+
+                    messages.success(request, "User added sucessfully")
+                    return HttpResponseRedirect("/user/userread")
+                else:
+                    print("invalid form")
             else:
-                print("invalid form")
+                useraddform = UserAddForm()
+            return render(request, "useradd.html", {"form": useraddform})
+
         else:
-            useraddform = UserAddForm()
+            return HttpResponseRedirect("../product/productread/")
     else:
         return HttpResponseRedirect("../login/")
-
-    return render(request, "useradd.html", {"form": useraddform})
 
 
 # Create UserView to see user value
@@ -64,15 +75,18 @@ def ChangePass(request):
 
         # if user submit empty old password then the program will raise validation error
         if not fpassword:
-            raise ValidationError("please enter OLD PASSWORD")
+            messages.error(request, "please enter OLD PASSWORD")
+            return HttpResponseRedirect("../")
 
         # if user submit empty new password then the program will raise validation error
         if not password1:
-            raise ValidationError("please enter NEW PASSWORD")
+            messages.error(request, "please enter NEW PASSWORD")
+            return HttpResponseRedirect("../")
 
         # if user submit empty new re-password then the program will raise validation error
         if not password2:
-            raise ValidationError("please re-enter NEW PASSWORD")
+            messages.error(request, "please re-enter NEW PASSWORD")
+            return HttpResponseRedirect("../")
 
         # extract session value to extract the user password from database
         semail = request.session["user"]
@@ -117,8 +131,8 @@ def UpdateUser(request, id):
             messages.success(request, "user updated sucessfully")
             return HttpResponseRedirect("/user/userread")
         else:
+            return render(request, "updateuser.html", {"form": fm})
             print("invalid form")
-
     data = User.objects.get(pk=id)
     fm = UserUpdateForm(instance=data)
 
