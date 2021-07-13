@@ -132,7 +132,6 @@ def UpdateUser(request, id):
             return HttpResponseRedirect("/user/userread")
         else:
             return render(request, "updateuser.html", {"form": fm})
-            print("invalid form")
     data = User.objects.get(pk=id)
     fm = UserUpdateForm(instance=data)
 
