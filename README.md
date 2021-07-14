@@ -8,15 +8,18 @@ simple user can view the dashboard and can update and delete product and categor
 Virtual environment setup is done with poetry, all the required dependencies(help or plugins needed to develop this project) are already
 present in pyproject.toml file, you dont have to worry about all the dependencies, but if you are new to django then you must install some 
 of the plugins
->pip install pillow
->pip install django-utils-six
->django-crispy-forms
+```
+pip install pillow
+pip install django-utils-six
+django-crispy-forms
+```
 
 automatically, project will setup in your device, incase if you dont have poetry in your device use 'pip install poetry' to add poetry 
 steps to run the code after cloning the project:
-
-> cd path/to/this/cloned/folder
-> POETRY INSTALL
-> POETRY RUN PYTHON MANAGE.PY RUNSERVER
+```
+cd path/to/this/cloned/folder
+POETRY INSTALL
+POETRY RUN PYTHON MANAGE.PY RUNSERVER
+```
 
 If you have any query regarding this project you can contact me @(anupam.siwakoti@gmail.com)
