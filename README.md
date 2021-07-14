@@ -1,6 +1,6 @@
-**Project userCRUD
-Developed by: @anupam
-Framework: django**
+## Project userCRUD
+### Developed by: @anupam
+### Framework: django
 
 UserCRUD is a simple admin panel where a user can login, if the user is admin then they can add, update, delete user product and category,
 simple user can view the dashboard and can update and delete product and category. Default database(sqllite) is used for the development.
@@ -21,5 +21,8 @@ cd path/to/this/cloned/folder
 POETRY INSTALL
 POETRY RUN PYTHON MANAGE.PY RUNSERVER
 ```
+for more information visit:
+- [Poetry Docs] (https://python-poetry.org/docs/)
+- [django documenation] (https://docs.djangoproject.com/)
 
-If you have any query regarding this project you can contact me @(anupam.siwakoti@gmail.com)
+If you have any query regarding this project you can contact me @ mail anupam.siwakoti@gmail.com
