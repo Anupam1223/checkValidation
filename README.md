@@ -1,6 +1,6 @@
-Project userCRUD
-Developed by: @anupam
-Framework: django
+#Project userCRUD
+##Developed by: @anupam
+###Framework: django
 
 UserCRUD is a simple admin panel where a user can login, if the user is admin then they can add, update, delete user product and category,
 simple user can view the dashboard and can update and delete product and category.
