@@ -14,7 +14,7 @@ pip install django-utils-six
 django-crispy-forms
 ```
 
-automatically, project will setup in your device, incase if you dont have poetry in your device use 'pip install poetry' to add poetry 
+automatically, project will setup in your device, incase if you dont have poetry in your device use `pip install poetry` to add poetry 
 steps to run the code after cloning the project:
 ```
 cd path/to/this/cloned/folder
