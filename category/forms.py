@@ -25,23 +25,3 @@ class CategoryAddForm(forms.ModelForm):
             ),
         }
 
-    """
-    name = forms.CharField(
-        error_messages={"required": "please enter category name"},
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "category",
-            }
-        ),
-    )
-    vendor = forms.CharField(
-        error_messages={"required": "please enter vendor"},
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "vendory",
-            }
-        ),
-    )
-    """
