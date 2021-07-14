@@ -19,4 +19,4 @@ steps to run the code after cloning the project:
 > POETRY INSTALL
 > POETRY RUN PYTHON MANAGE.PY RUNSERVER
 
-If you have any query regarding this project you can contact me @[anupam.siwakoti@gmail.com]
+If you have any query regarding this project you can contact me @(anupam.siwakoti@gmail.com)
