@@ -25,4 +25,5 @@ for more information visit:
 - [Poetry Docs] (https://python-poetry.org/docs/)
 - [django documenation] (https://docs.djangoproject.com/)
 
+hit `127.0.0.1/user` for accessing the website 
 If you have any query regarding this project you can contact me @ mail anupam.siwakoti@gmail.com
